@@ -1,5 +1,26 @@
 const formulario = document.getElementById('iniciarSesion');
 
+// Se ejecuta automáticamente cuando el usuario inicia sesión con Google
+function manejarRespuestaGoogle(respuesta) {
+    // respuesta.credential es un JWT (token) firmado por Google
+    const datosUsuario = JSON.parse(atob(respuesta.credential.split('.')[1]));
+
+    console.log("Usuario verificado por Google:", datosUsuario);
+
+    const usuario = {
+        correo: datosUsuario.email,
+        nombre: datosUsuario.name,
+        foto: datosUsuario.picture,
+        metodo: "google",
+    };
+
+    localStorage.setItem('formulario', JSON.stringify(usuario));
+    alert("¡Bienvenido, " + datosUsuario.name + "!");
+
+    // Aquí podrías redirigir, por ejemplo:
+    // window.location.href = "inicio.html";
+}
+
 formulario.addEventListener('submit', function (evento) {
     evento.preventDefault();
 
